@@ -138,15 +138,40 @@ After collecting 24 hours of baseline attack data, the environment was hardened:
 - NSG rule updated to allow RDP (port 3389) from **my IP address only** — all other inbound traffic denied
 - Windows Defender Firewall re-enabled on all profiles (Domain, Private, Public)
 
-**Result:**
+## Metrics Before Hardening
 
-| Metric | Before Hardening | After Hardening |
-|---|---|---|
-| Failed logons per hour | ~1,500–2,600 | **0** |
-| Total attack attempts | 20,358 | 0 (in 2h window) |
-| Inbound attack traffic | Unrestricted | Blocked at NSG |
+The following metrics were measured over a 24-hour period with the environment fully exposed:
 
-> Hardening reduced failed authentication attempts by **100%**, demonstrating how a single NSG source IP restriction combined with host-based firewall enforcement can eliminate brute-force exposure entirely.
+| Start Time | 2026-06-10 ~8:00 PM EST |
+| Stop Time  | 2026-06-11 ~4:00 PM EST |
+
+| Metric | Count |
+|---|---|
+| Failed RDP Logons (EventID 4625) | 20,358 |
+| Peak Hourly Attack Rate | ~2,600 |
+| Unique Attacking IPs | 13 |
+| Countries of Origin | 9 |
+
+---
+
+## Metrics After Hardening
+
+The following metrics were measured over a 2-hour window after security controls were applied:
+
+| Start Time | 2026-06-11 ~4:00 PM EST |
+| Stop Time  | 2026-06-11 ~6:00 PM EST |
+
+| Metric | Count |
+|---|---|
+| Failed RDP Logons (EventID 4625) | 0 |
+| Peak Hourly Attack Rate | 0 |
+| Unique Attacking IPs | 0 |
+
+**Security controls applied:**
+- NSG restricted to single trusted source IP (port 3389 only)
+- Windows Defender Firewall re-enabled on all profiles (Domain, Private, Public)
+
+> All attack map queries returned no results following hardening, demonstrating complete elimination of external brute-force traffic.
 
 ---
 
