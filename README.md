@@ -3,11 +3,17 @@
 ![Attack Map](screenshots/attack-map.png)
 *Live attack map showing real-world brute-force traffic captured over 24 hours*
 
+> **Lab Duration:** ~36 hours exposure (June 10–11, 2026)
+
 ## Overview
 
-This project deploys a deliberately exposed Windows 10 virtual machine (VM) on Microsoft Azure as a **honeypot**, which is a decoy system designed to attract real attackers. All attack traffic is forwarded to **Microsoft Sentinel and Microsoft Defender** (a cloud-native SIEM) via a Log Analytics Workspace, where I used custom KQL queries enrich the raw logs with geolocation data and visualize attack origins on an interactive world map.
+This project deploys a deliberately exposed Windows 10 virtual machine (VM) on Microsoft Azure as a **honeypot**, which is a decoy system designed to attract real attackers. All attack traffic is forwarded to **Microsoft Sentinel** (a cloud-native SIEM) via a Log Analytics Workspace and **Microsoft Defender**, where I used custom KQL queries to enrich the raw logs with geolocation data and visualize attack origins on an interactive world map.
 
 The goal when making this lab was to simulate a real-world cloud Security Operations Center (SOC) environment, demonstrate end-to-end log ingestion and analysis, and measure the impact of security hardening on attack volume.
+
+### Full Azure Honeynet & Cloud SOC Resouce Group
+
+![Full Azure Honeynet & Cloud SOC Resouce Group](screenshots/SOC-Lab_Resource-Group-Map.png)
 
 ---
 
@@ -21,7 +27,7 @@ The goal when making this lab was to simulate a real-world cloud Security Operat
 | Log Analytics Workspace | Central log repository receiving Windows Security Events |
 | Azure Monitor Agent (AMA) + DCR | Forwards VM logs to the workspace in real time |
 | Microsoft Sentinel | SIEM layered on top — used for KQL queries and dashboards |
-| Geolocation Watchlist (54,000 rows) | Maps attacker IP ranges to city and country |
+| Geolocation Watchlist (67,000 Items) | Maps attacker IP ranges to city and country |
 | Sentinel Workbook (Attack Map) | Interactive dashboard visualizing attack origins globally |
 
 ---
@@ -193,7 +199,7 @@ This is the same log forwarding architecture used in production Azure SOC enviro
 | `screenshots/nsg-after.png` | NSG rules after hardening (my IP only) |
 | `screenshots/firewall-off.png` | Windows Firewall disabled (pre-hardening) |
 | `screenshots/firewall-on.png` | Windows Firewall re-enabled (post-hardening) |
-| `screenshots/kql-raw-4625.png` | Raw EventID 4625 query — 20,284 failed logon events |
+| `screenshots/kql-raw-4625.png` | Raw EventID 4625 query — 20,358 failed logon events |
 | `screenshots/kql-leaderboard.png` | Top attacking IPs by volume (no geo enrichment) |
 | `screenshots/kql-geo-leaderboard.png` | Top attacking IPs with city and country enrichment |
 | `screenshots/kql-geo-enriched.png` | Full geo-enriched event stream with timestamp and account |
@@ -258,4 +264,4 @@ This is the same log forwarding architecture used in production Azure SOC enviro
 - [MITRE ATT&CK — Brute Force (T1110)](https://attack.mitre.org/techniques/T1110/)
 - [What is a Honeypot? — Cloudflare](https://www.cloudflare.com/learning/security/glossary/what-is-a-honeypot/)
 - [Windows Event ID 4625 — Failed Logon](https://www.ultimatewindowssecurity.com/securitylog/encyclopedia/event.aspx?eventid=4625)
-- [Geolocation Watchlist Source — Josh Madakor GitHub](https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/misc/geoip-summarized.csv)
+- [Geolocation Watchlist Source GitHub](https://raw.githubusercontent.com/joshmadakor1/lognpacific-public/refs/heads/main/misc/geoip-summarized.csv)
